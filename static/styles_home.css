@@ -1,0 +1,74 @@
+body {
+    font-family: Arial;
+    background-color: aliceblue;
+    text-align: center;
+
+}
+
+#web_title{
+    display: flex;
+    border: 1px solid black;
+    width: 100%;
+}
+/*第一列為title的區塊，含有logo及作品名稱*/
+.loge{
+    border: 1px solid black;
+    width: 210px;
+}
+.title{
+    display:inline-flex;
+    border: 1px solid black;
+    width:100%
+}
+.title h2{
+    border: 1px solid black;
+    margin:auto;
+    font-size: 35px
+}
+nav{
+
+    border: 1px solid black;
+    display:inline-flex;
+    width:20%;
+    cursor: pointer;
+    list-style: none;
+}
+li, a{
+    margin:auto;
+    text-decoration:none;
+    font-size: 20px
+}
+
+.content{
+
+    border:1px solid black;
+    width: 100%;
+    /* border: 1px solid black; */
+    position: absolute;
+    top: 40%;
+}
+.content p {
+   font-weight: 100;
+   line-height: 25px;
+}
+.button-box{
+    /* border:1px solid black; */
+    /* margin: 15px; */
+    border:1px solid black;
+    display: inline-flex;
+
+}
+.button-card {
+
+    width: 200px;
+    background-color: #1abc9c;
+    font-size: 25px;
+    border-radius: 4px;
+    margin: 15px 30px;
+    padding: 15px;
+}
+.button{
+
+    color: white;
+    text-decoration: none;
+}

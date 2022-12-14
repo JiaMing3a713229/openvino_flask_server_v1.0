@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>monitor</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <script src="/static/chart.min.js"></script>
+    <script>
+        var count = 0;
+        var count_perform = 0;
+        function init(){
+            const ctx = document.getElementById("myChart").getContext("2d");
+            const ctx_perform = document.getElementById("myChart-perform").getContext("2d");
+            const labels = [];
+            const labelsPerform = [];
+
+            const data = {
+                labels,
+                datasets:[{
+                    data: [],
+                    label:"humanTraffic",
+                    backgroundColor:"rgba(135,206,250)"
+                }
+            ],
+            };
+            const dataPerform = {
+                labels,
+                datasets:[{
+                    data: [],
+                    label:"Performance",
+                    backgroundColor:"rgba(135,206,250)"
+                }
+            ],
+            };
+
+
+            const config = {
+                type:'line',
+                data: data,
+                options:{
+                    responsive:true,
+                },
+            };
+            const config_perform = {
+                type:'line',
+                data: dataPerform,
+                options:{
+                    responsive:true,
+                },
+            };
+
+
+            const myChart = new Chart(ctx, config);
+            const myChartPerform = new Chart(ctx_perform, config_perform);
+
+            function updateTempChart(){
+                count++;
+                fetch("/humanTraffic_data_field2").then(function(response){
+                    return response.text();
+                }).then(function(value){
+                    var Arraylength=50;
+                    if(data.datasets[0].data.length >= Arraylength){
+                        for(var i=0;i<Arraylength-1;i++){
+                            data.datasets[0].data[i]=data.datasets[0].data[i+1];
+                            labels[i] = labels[i+1];
+                        }
+                        data.datasets[0].data[Arraylength-1]= value;
+                        labels[Arraylength-1] = String(count);
+                    }
+                    else{
+                        data.datasets[0].data.push(value);
+                        labels.push(String(count));
+                    }
+                    myChart.update();
+                });
+            };
+
+            function updatePerformChart(){
+                count_perform++;
+                fetch("/performance_2").then(function(response){
+                    return response.text();
+                }).then(function(value_p){
+                    var Arraylength=50;
+                    if(dataPerform.datasets[0].data.length >= Arraylength){
+                        for(var i=0;i<Arraylength-1;i++){
+                            dataPerform.datasets[0].data[i]=dataPerform.datasets[0].data[i+1];
+                            labelsPerform[i] = labelsPerform[i+1];
+                        }
+                        dataPerform.datasets[0].data[Arraylength-1]= value_p;
+                        labelsPerform[Arraylength-1] = String(count_perform);
+                    }
+                    else{
+                        dataPerform.datasets[0].data.push(value_p);
+                        labelsPerform.push(String(count_perform));
+                    }
+                    myChartPerform.update();
+                });
+            };
+
+            function updateAlert(){
+                fetch("/alert").then(function(response){
+                    return response.text();
+                }).then(function(value_p){
+                    if(value_p == 12){
+                        alert("發現危險物品，警示");
+                    }
+                });
+            };
+
+
+
+
+        <!--           每一秒更新數據           -->
+
+            setInterval(function(){
+                updateTempChart();
+            },1000);
+            setInterval(function(){
+                updatePerformChart();
+            },1100);
+            setInterval(function(){
+                updateAlert();
+            },500);
+        }
+    </script>
+</head>
+<body onload="init();">
+    <div class="row" id="web_title">
+        <div class="loge" id="Intel-loge">
+            <img src="/static/Intel_logo66.png">
+        </div>
+        <div class="title">
+            <h2>動態物件辨識之智慧安全監測整合物聯網系統</h2>
+            <nav class="nav_card">
+                <li><a href="/">Home</a></li>
+                <li><a href="/monitor">Monitor</a></li>
+            </nav>
+        </div>
+        <div class="loge" id="MakerPro-loge">
+            <img src="/static/MakerPro_logo200.jpg">
+        </div>
+
+    </div>
+    <div class="row" id="image_monitor">
+        <div class="monitor">
+<!--            <div class="info_col" id="info_1">-->
+<!--                <h2>場域一<span></span></h2>-->
+<!--            </div>-->
+            <div class="image_col" id="field1">
+<!--                <h2>場域一<span></span></h2>-->
+                <img src={{url_for('stream_feed_field2')}} height="400" width="600">
+            </div>
+            <div class="image_col" id="field2">
+                <img src={{url_for('stream_reference_field2')}} height="400" width="600">
+            </div>
+        </div>
+    </div>
+    <div class="row" id="row_3">
+        <div class="row_3" id="col_1">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="row_3" id="col_2">
+            <canvas id="myChart-perform"></canvas>
+        </div>
+        <div class="row_3" id="col_3">
+            <a href="/monitor">
+                <button class="switch_button">鏡頭1</button>
+            </a>
+            <a href="/monitor_field2">
+                <button class="switch_button">鏡頭2</button>
+            </a>
+            <a href="/monitor_total">
+                <button class="switch_button">全監控</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>monitor</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles_home.css')}}">
+    <script src="/static/chart.min.js"></script>
+</head>
+<body onload="init();">
+    <div class="row" id="web_title">
+        <div class="loge" id="Intel-loge">
+            <img src="/static/Intel_logo66.png">
+        </div>
+        <div class="title">
+            <h2>動態物件辨識之智慧安全監測整合物聯網系統</h2>
+            <nav class="nav_card">
+                <li><a href="/">Home</a></li>
+                <li><a href="/monitor">Monitor</a></li>
+            </nav>
+        </div>
+        <div class="loge" id="MakerPro-loge">
+            <img src="/static/MakerPro_logo200.jpg">
+        </div>
+
+    </div>
+    <div class="content">
+        <div class="content-title">
+
+            <h1>基於MQTT可攜式攝影機之動態物件辨識物聯網系統</h1>
+
+        </div>
+        <div class="button-box">
+
+            <div class="button-card">
+                <a class="button monitor" href="/monitor">Monitor</a>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</body>
+</html>
