@@ -3,14 +3,7 @@ import cv2
 import numpy as np
 from openvino.runtime import Core
 import time
-import matplotlib.pyplot as plt
 import requests
-from PIL import Image
-# import binascii
-import os
-import threading
-
-
 
 MQTT_Publish_topic = "machine/camera/SSD1"
 MQTT_human_traffic = "machine/camera/humanTraffic"
@@ -117,7 +110,7 @@ def draw_boxes(select, frame, boxes):
 def detect_Object(select, frame):
     global delay_list, mqtt_fps_list,mqtt_over_time,total_dalay,total_delay_sum
     start = time.time()
-    mqtt_interval = (start - mqtt_over_time)* 1000
+    mqtt_interval = (start - mqtt_over_time) * 1000
     mqtt_fps_list.append(mqtt_interval)
     global human_traffic
     original_img = frame
@@ -151,39 +144,11 @@ def detect_Object(select, frame):
     # print(f'{(end - start)* 1000} ms') #0.015s=15ms
     Perform = int((end - start)* 1000)
     # print(Perform)
-    if(len(delay_list)>2000):
-        for i in range(len(total_dalay)):
-            if((int(total_dalay[i]))< 5000):
-                total_delay_sum += int(total_dalay[i])
-            else:
-                print(int(total_dalay[i]))
-        avg = total_delay_sum / len(total_dalay)
-        print(f'sum:{total_delay_sum}')
-        print(f'sum:{len(total_dalay)}')
-        print(f'平均間隔時間{avg}')
-        print(total_dalay[5:100])
-        plt.subplot(3, 1, 1)
-        plt.plot(delay_list)
-        plt.title("Performer")
-        plt.xlabel('Image data')
-        plt.ylabel('Inference speed(ms)')
-        plt.subplot(3, 1, 2)
-        plt.plot(mqtt_fps_list[5:2000])
-        plt.title("mqtt_fps")
-        plt.xlabel('Image data')
-        plt.ylabel('Intervals(ms)')
-        plt.subplot(3, 1, 3)
-        plt.plot(total_dalay[5:2000])
-        plt.title("total_Delay")
-        plt.xlabel('Image data')
-        plt.ylabel('total_time(ms)')
-        plt.show()
 
-    else:
-        refer_interval = (end - start)* 1000
-        delay_list.append((end - start)* 1000)
-        total_time = int(refer_interval + mqtt_interval)
-        total_dalay.append(total_time)
+    refer_interval = (end - start)* 1000
+    delay_list.append((end - start)* 1000)
+    total_time = int(refer_interval + mqtt_interval)
+    total_dalay.append(total_time)
     print(f"原始圖片{str_payload[0:100]}")
     print(f"推論時間:{Perform}ms")
     print(f"總耗費時間:{total_time}ms")
