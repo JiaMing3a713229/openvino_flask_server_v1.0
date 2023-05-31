@@ -7,8 +7,8 @@ import threading
 
 app = Flask(__name__)
 
-# app.config['MQTT_BROKER_URL'] = '192.168.0.249'
-app.config['MQTT_BROKER_URL'] = '172.20.10.8'
+app.config['MQTT_BROKER_URL'] = '192.168.0.249'
+# app.config['MQTT_BROKER_URL'] = '172.20.10.8'
 app.config['MQTT_BROKER_PORT'] = 1883
 app.config['MQTT_USERNAME'] = ""
 app.config['MQTT_PASSWORD'] = ""

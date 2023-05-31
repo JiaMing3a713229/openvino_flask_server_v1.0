@@ -4,7 +4,7 @@ import numpy as np
 from openvino.runtime import Core
 import time
 import requests
-
+import threading
 MQTT_Publish_topic = "machine/camera/SSD1"
 MQTT_human_traffic = "machine/camera/humanTraffic"
 MQTT_Perform_field1 = "machine/reference1/performance"
@@ -30,7 +30,7 @@ classes = [
     "teddy bear", "hair drier", "toothbrush", "hair brush"
 ]
 
-def process_results(frame, results, thresh=0.4):
+def process_results(frame, results, thresh=0.45):
     global human_traffic
     human_traffic = 0
     # The size of the original frame.
@@ -98,7 +98,7 @@ def draw_boxes(select, frame, boxes):
                 'Authorization': 'Bearer ' + token
             }
             data = {
-                'message':'警告! 發現危險物件'  # 設定要發送的訊息
+                'message':'警告! 發現危險物品'  # 設定要發送的訊息
             }
             result_image = cv2.imencode('.jpg', frame)[1]
             data_encode = np.array(result_image)
@@ -212,8 +212,8 @@ if __name__ == "__main__":
     # 設定登入帳號密碼
     #client.username_pw_set("try","xxxx")
     # 設定連線資訊(IP, Port, 連線時間)
-    # client.connect("192.168.0.249", 1883, 60)
-    client.connect("172.20.10.8", 1883, 60)
+    client.connect("192.168.0.249", 1883, 60)
+    # client.connect("172.20.10.8", 1883, 60)
     # -----------------------------------------------------------------------------------
     ie = Core()
     print(ie.available_devices)
