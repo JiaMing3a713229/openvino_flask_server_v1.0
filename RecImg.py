@@ -5,11 +5,18 @@ from openvino.runtime import Core
 import time
 import requests
 import threading
+
+
+# MQTT BROKER ADDRESS
+MQTT_BROKER_ADDR = "192.168.139.106"
+# Subscribe Topic for receive image for camera(ESP32)
+MQTT_SUBSCRIBER_topic_field1 = "machine/camera/jpeg_image"
+MQTT_SUBSCRIBER_topic_field2 = "machine/camera/ID_2/jpeg_image"
+
 MQTT_Publish_topic = "machine/camera/SSD1"
 MQTT_human_traffic = "machine/camera/humanTraffic"
 MQTT_Perform_field1 = "machine/reference1/performance"
 
-MQTT_SUBSCRIBER_topic_field2 = "machine/camera/ID_2/jpeg_image"
 MQTT_Publish_topic_field2 = "machine/camera/ID_2/SSD1"
 MQTT_human_traffic_field2 = "machine/camera/ID_2/humanTraffic"
 MQTT_Perform_field2 = "machine/reference2/performance"
@@ -182,7 +189,7 @@ def on_connect(client, userdata, flags, rc):
     # 將訂閱主題寫在on_connet中
     # 如果我們失去連線或重新連線時
     # 地端程式將會重新訂閱
-    client.subscribe('machine/camera/jpeg_image')
+    client.subscribe(MQTT_SUBSCRIBER_topic_field1)
     client.subscribe(MQTT_SUBSCRIBER_topic_field2)
     print('mqtt connected')
 # 當接收到從伺服器發送的訊息時要進行的動作
@@ -201,19 +208,14 @@ def on_message(client, userdata, msg):
             detect_Object(2, msg.payload)
 
 if __name__ == "__main__":
-    # 連線設定
-    # 初始化地端程式
-    # delay_list = []
+
     client = mqtt.Client()
     # 設定連線的動作
     client.on_connect = on_connect
     # 設定接收訊息的動作
     client.on_message = on_message
-    # 設定登入帳號密碼
-    #client.username_pw_set("try","xxxx")
     # 設定連線資訊(IP, Port, 連線時間)
-    client.connect("192.168.0.249", 1883, 60)
-    # client.connect("172.20.10.8", 1883, 60)
+    client.connect(MQTT_BROKER_ADDR, 1883, 60)
     # -----------------------------------------------------------------------------------
     ie = Core()
     print(ie.available_devices)
@@ -224,11 +226,9 @@ if __name__ == "__main__":
 
     input_layer = compiled_model.input(0)
     output_layer = compiled_model.output(0)
-    # print(input_layer)
     i_h, i_w = list(input_layer.shape)[1:3]
     print(f'{i_h},{i_w}')
     input_layer.any_name, output_layer.any_name
-
 
     human_traffic = 0
     delay_list = []

@@ -15,6 +15,8 @@ MQTT_human_traffic_field2 = "machine/camera/ID_2/humanTraffic"
 MQTT_Perform_field2 = "machine/reference2/performance"
 MQTT_Alert = "machine/alert"
 
+MQTT_Encrypted_Image = "machine/camera/ID_2/En_jpeg_image"
+
 classes = [
     "background", "person", "bicycle", "car", "motorcycle", "airplane", "bus", "train",
     "truck", "boat", "traffic light", "fire hydrant", "street sign", "stop sign",
@@ -119,7 +121,9 @@ def detect_Object(select, frame):
     file_bytes = np.asarray(bytearray(frame), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     frame =img
-
+    # print(file_bytes.shape)
+    # cv2.imshow('esp32-cam pixel', frame)
+    # cv2.waitKey(1)
     # origin_image = cv2.imread(filename="Street_people1.jpg")
     image = cv2.cvtColor(frame, code=cv2.COLOR_BGR2RGB)
     # print(f'origin_size:{image.shape}')
@@ -184,6 +188,7 @@ def on_connect(client, userdata, flags, rc):
     # 地端程式將會重新訂閱
     client.subscribe('machine/camera/jpeg_image')
     client.subscribe(MQTT_SUBSCRIBER_topic_field2)
+    client.subscribe(MQTT_Encrypted_Image)
     print('mqtt connected')
 # 當接收到從伺服器發送的訊息時要進行的動作
 def on_message(client, userdata, msg):
@@ -195,6 +200,13 @@ def on_message(client, userdata, msg):
         # img_people = cv2.imread('people.jpg')
         print(f'topic:{msg.topic}')
         # print(f"原始圖片{msg.payload}")
+        # -------------------------------封包解密----------------------------------------
+
+
+
+
+        # ------------------------------------------------------------------------------
+
         if(msg.topic == 'machine/camera/jpeg_image'):
             detect_Object(1, msg.payload)
         elif(str(msg.topic) == MQTT_SUBSCRIBER_topic_field2):
@@ -212,7 +224,8 @@ if __name__ == "__main__":
     # 設定登入帳號密碼
     #client.username_pw_set("try","xxxx")
     # 設定連線資訊(IP, Port, 連線時間)
-    client.connect("192.168.0.249", 1883, 60)
+
+    client.connect("192.168.0.178", 1883, 60)
     # client.connect("172.20.10.8", 1883, 60)
     # -----------------------------------------------------------------------------------
     ie = Core()

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動態物件辨識之智慧安全監測整合物聯網系統</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles_monitor_v3.css')}}">
+    <script src="chart.min.js"></script>
+    <script src="monitor.js"></script>
+</head>
+<body onload="init();">
+    <header id="web_title">
+        <div class="logo" id="Intel-logo">
+            <img src="/static/oip.png">
+        </div>
+        <div class="title">
+            <h1>動態物件辨識之智慧安全監測整合物聯網系統</h1>
+            <nav>
+                <nav class="nav_card">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/monitor">Monitor</a></li>
+            </nav>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="image_monitor">
+            <div class="monitor">
+                <div class="image_col" id="field1">
+                    <img src={{url_for('stream_feed')}}>
+                </div>
+                <div class="image_col" id="field2">
+                    <img src={{url_for('stream_reference')}}>
+                </div>
+            </div>
+        </section>
+
+<!--        <section id="data_visualization">-->
+<!--            <div class="chart_container">-->
+<!--                <canvas id="myChart"></canvas>-->
+<!--            </div>-->
+<!--            <div class="chart_container">-->
+<!--                <canvas id="myChart-perform"></canvas>-->
+<!--            </div>-->
+<!--            <div class="control_panel">-->
+<!--                <div class="dropdown">-->
+<!--                    <button onclick="toggleDropdown()" class="dropbtn">場域選擇</button>-->
+<!--                    <div id="fieldDropdown" class="dropdown-content">-->
+<!--                        <a href="/monitor">鏡頭1</a>-->
+<!--                        <a href="/monitor_field2">鏡頭2</a>-->
+<!--                        <a href="/monitor_total">全監控</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </section>-->
+    </main>
+</body>
+</html>

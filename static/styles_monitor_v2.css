@@ -1,0 +1,174 @@
+/* 基本頁面設置 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff; /* 淺藍色背景 */
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* 網頁標題區域 */
+#web_title {
+    display: flex;
+    background-color: #1abc9c; /* 綠色背景 */
+    color: white;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 添加陰影效果 */
+}
+
+/* Logo 設置 */
+.logo {
+    width: 210px;
+    padding: 5px;
+}
+
+/* 標題文字區域 */
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.title h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+/* 導航欄 */
+nav {
+    display: flex;
+    justify-content: space-around;
+    width: 20%;
+    background-color: #16a085; /* 深綠色背景 */
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease; /* 滑鼠懸停效果 */
+}
+
+nav a:hover {
+    color: #f1c40f; /* 懸停時變為黃色 */
+}
+
+/* 監控畫面區域 */
+#image_monitor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 1300px; /* 調整最大寬度以適應兩個監控畫面 */
+}
+
+.monitor {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* 監控畫面設置 */
+.image_col {
+    width: 600px; /* 固定寬度 */
+    height: 400px; /* 固定高度 */
+    margin: 0 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+}
+
+/* 監控畫面兩側的信息區域 */
+#info_1, #info_2 {
+    width: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 第三行（圖表和控制區域） */
+#row_3 {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* 圖表和控制區域的列 */
+#col_1, #col_2, #col_3 {
+    width: 30%;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* 開關按鈕樣式 */
+.switch_button {
+    background-color: #3498db; /* 藍色背景 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.switch_button:hover {
+    background-color: #2980b9; /* 懸停時變為深藍色 */
+}
+
+/* 響應式設計 */
+@media screen and (max-width: 1300px) {
+    /* 在中等屏幕上調整佈局 */
+    #image_monitor {
+        flex-direction: column;
+    }
+
+    .monitor {
+        flex-direction: column;
+    }
+
+    .image_col {
+        margin: 10px 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    /* 在小屏幕上進一步調整佈局 */
+    #web_title {
+        flex-direction: column;
+    }
+
+    .logo {
+        width: 100px;
+        margin: 0 auto;
+    }
+
+    nav {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .image_col {
+        width: 90%;
+        height: auto; /* 允許高度自適應 */
+        aspect-ratio: 3/2; /* 保持大致的寬高比 */
+    }
+
+    #row_3 {
+        flex-direction: column;
+    }
+
+    #col_1, #col_2, #col_3 {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+}

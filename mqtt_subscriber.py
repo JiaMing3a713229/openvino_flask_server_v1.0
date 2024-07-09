@@ -2,7 +2,6 @@ import paho.mqtt.client as mqtt
 import numpy as np
 import base64
 import zlib
-import time
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str('machine/camera/jpeg_image'))
@@ -15,9 +14,16 @@ def on_connect(client, userdata, flags, rc):
 # 當接收到從伺服器發送的訊息時要進行的動作
 def on_message(client, userdata, msg):
     if(len(msg.payload) > 1000):
-        print(f'topic:{msg.topic}')
-        print(f"原始圖片{msg.payload}")
+        # 解码收到的Base64编码
+        decoded_data = base64.b64decode(msg.payload)
 
+        # 将Base64解码后的数据转换回矩阵
+        matrix = np.frombuffer(zlib.decompress(decoded_data), dtype=int).reshape((800, 600, 3))
+
+        # 打印矩阵的形状和数据类型
+        print("Matrix shape:", matrix.shape)
+        print("Matrix dtype:", matrix.dtype)
+        print(matrix)
 
 if __name__ == "__main__":
     # 連線設定
@@ -34,16 +40,4 @@ if __name__ == "__main__":
     client.connect("192.168.0.249", 1883, 60)
     # client.connect("172.20.10.8", 1883, 60)
     # -----------------------------------------------------------------------------------
-    # 生成随机的800*600*3矩阵作为示例
-    matrix = np.random.randint(0, 500, size=(800, 600, 3), dtype=int)
-
-    # 压缩矩阵
-    pre_time = time.time()
-    compressed_data = zlib.compress(matrix.tobytes())
-    print((time.time()-pre_time)*1000)
-    # 将矩阵转换为Base64编码
-    encoded_data = base64.b64encode(compressed_data)
-
-    client.publish('machine/camera/jpeg_image_base64', encoded_data)
-
     client.loop_forever()
